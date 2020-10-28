@@ -1,21 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 
-function Nav() {
+function Nav({region, setRegion, entriesLoaded}) {
+
+  const navRegionHandler = (e) =>{
+    if(e.currentTarget.getAttribute('href')==='/'){
+      setRegion({region:'', offset:'',limit:''});
+    }else if(e.currentTarget.getAttribute('href')==='/pokedex' && region.region===''){
+      setRegion({region:'kanto', offset:'0',limit:'151'});
+    }
+  }
+
   return (
     <div>
       <nav>
-          <div className="nav-wrapper">
-            <h1>Kanto Region Pokédex</h1>
-            <ul className="nav-links">
-                <Link to='/pokedex' className='link'>  
-                    <li>Pokedex</li> 
-                </Link>               
-                <Link to='/about' className='link'>  
-                    <li>About</li> 
-                </Link>
-            </ul>
-          </div>
+        <div className={entriesLoaded? "nav-wrapper" : "nav-wrapper disabled"}>
+          <Link to='/' className='link' onClick={navRegionHandler}> 
+            <h1>{region===''? '' : region.region} Pokédex</h1>
+          </Link>   
+          <ul className="nav-links">
+              <Link to='/pokedex' className='link' onClick={navRegionHandler}>  
+                  <li>Pokédex</li> 
+              </Link>               
+              <Link to='/about' className='link'>  
+                  <li>About</li> 
+              </Link>
+          </ul>
+        </div>
       </nav>
     </div>
   );

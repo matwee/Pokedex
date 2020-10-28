@@ -7,17 +7,15 @@ import Evos from './Evos';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-function Pokedex() {
+function Pokedex({region, entriesLoaded, setEntriesLoaded}) {
 
     //run fetchItems and widthHandler on load
     useEffect(()=>{
-        fetchItems();
+        fetchItems(region.limit,region.offset);
         widthHandler();
     }, []);
 
     //declaring states
-    const [limit, setLimited] = useState(150);
-    const [offset, setOffset] = useState(0);
     const [currentPokemon, setCurrentPokemon]= useState({
         name:'', 
         id: '',
@@ -36,26 +34,25 @@ function Pokedex() {
     const [matches, setMatches] = useState([]);
     const [pokemon, setPokemon]= useState([]);
     const [searchResult, setSearchResult] = useState('');
-    const [entriesLoaded, setEntriesLoaded] = useState(false);
     const [imgLoaded, setImgLoaded] = useState(false);
     const [searchActive, setSearchActive] = useState(true);
     const [widthOver800, setWidthOver800] = useState(false);
     
     //debounce function
     const debounce = (func, wait = 20, immediate = true) => {
-        var timeout;
+    var timeout;
         return function() {
-          var context = this, args = arguments;
-          var later = function() {
+            var context = this, args = arguments;
+            var later = function() {
             timeout = null;
             if (!immediate) func.apply(context, args);
-          }
-          var callNow = immediate && !timeout;
-          clearTimeout(timeout);
-          timeout = setTimeout(later, wait);
-          if (callNow) func.apply(context, args);
+            }
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
         }
-      }
+    }
     
     //function to check window width and set widthOver800
     const widthHandler = () =>{
@@ -70,10 +67,10 @@ function Pokedex() {
     window.addEventListener('resize', debounce(widthHandler));
 
     //fetching pokemon info on page load
-    const fetchItems = async () =>{
+    const fetchItems = async (x,y) =>{
         setEntriesLoaded(false);
         try{
-            const data = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+            const data = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${x}&offset=${y}`);
             const entries = await data.json();
             const pokes = entries.results;
             const allData = await Promise.all( pokes.map( async (entry) =>{
@@ -110,8 +107,9 @@ function Pokedex() {
                         let arr = evoData.species.url.split('/');
                         let id = parseInt(arr[6]);
                         evoChain.push({
-                            //conditional statement due to inconsistencies in pokeAPI naming schemes for hyphenated pokemon
-                            speciesName: numOfEvos===0 && chain===0? pokeData.name : evoData.species.name,
+                            //conditional statement due to inconsistencies in pokeAPI
+                            // speciesName: numOfEvos===0 && chain===0? pokeData.name : evoData.species.name,
+                            speciesName: evoData.species.name,
                             chain: chain,
                             id: id
                         });
@@ -139,7 +137,7 @@ function Pokedex() {
             console.log(error);
         }
     }
-    
+
     //returning JSX
     return(
         <div className='wrapper'>
@@ -179,7 +177,7 @@ function Pokedex() {
                                                 currentPokemon={currentPokemon}
                                                 setImgLoaded={setImgLoaded}
                                                 pokemon={pokemon}
-                                                offset={offset}
+                                                offset={region.offset}
                                                 setSearchActive={setSearchActive}
                                                 searchActive={searchActive}
                                                 widthOver800={widthOver800}
@@ -199,7 +197,7 @@ function Pokedex() {
                                                 currentPokemon={currentPokemon}
                                                 setImgLoaded={setImgLoaded}
                                                 pokemon={pokemon}
-                                                offset={offset}
+                                                offset={region.offset}
                                                 setSearchActive={setSearchActive}
                                                 searchActive={searchActive}
                                                 widthOver800={widthOver800}
@@ -231,7 +229,7 @@ function Pokedex() {
                             pokemon={pokemon}
                             currentEvoChain={setCurrentEvoChain}
                             setCurrentEvoChain={setCurrentEvoChain}
-                            offset={offset}
+                            offset={region.offset}
                         />
                     </div>
                 </div>

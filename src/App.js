@@ -1,20 +1,45 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Nav from './components/Nav';
 import Pokedex from './components/Pokedex';
 import About from './components/About';
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import Home from './components/Home';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
+
+  const [entriesLoaded, setEntriesLoaded] = useState(true);
+  const [region, setRegion] = useState({
+    region:'',
+    offset:'',
+    limit:''
+  });
+
   return (
     <Router>
       <div className="App">
-        <Nav />
+        <Nav 
+          region={region} 
+          setRegion={setRegion}
+          entriesLoaded={entriesLoaded}
+        />
         <Switch>
-          <Route exact path="/">
-            <Redirect to="/pokedex" />
-          </Route>
-          <Route path='/pokedex' exact component={Pokedex} />
+          <Route path='/' exact 
+            render = {(props)=>(
+              <Home 
+                setRegion={setRegion}
+              />
+            )}
+          />
+          <Route path='/pokedex' exact 
+            render = {(props)=>(
+              <Pokedex 
+                region={region}
+                entriesLoaded={entriesLoaded}
+                setEntriesLoaded={setEntriesLoaded}
+              />
+            )}
+          />
           <Route path='/about' exact component={About} />
         </Switch>
       </div>
