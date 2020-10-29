@@ -5,8 +5,8 @@ function Nav({region, setRegion, entriesLoaded}) {
 
   const navRegionHandler = (e) =>{
     if(e.currentTarget.getAttribute('href')==='/'){
-      setRegion({region:'', offset:'',limit:''});
-    }else if(e.currentTarget.getAttribute('href')==='/pokedex' && region.region===''){
+      setRegion({region:'React', offset:'',limit:''});
+    }else if(e.currentTarget.getAttribute('href')==='/pokedex' && region.region==='React'){
       setRegion({region:'kanto', offset:'0',limit:'151'});
     }
   }
@@ -16,7 +16,7 @@ function Nav({region, setRegion, entriesLoaded}) {
       <nav>
         <div className={entriesLoaded? "nav-wrapper" : "nav-wrapper disabled"}>
           <Link to='/' className='link' onClick={navRegionHandler}> 
-            <h1>{region===''? '' : region.region} Pokédex</h1>
+            <h1>{region==='React'? 'React' : region.region} Pokédex</h1>
           </Link>   
           <ul className="nav-links">
               <Link to='/pokedex' className='link' onClick={navRegionHandler}>  

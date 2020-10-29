@@ -1,6 +1,27 @@
 import React from 'react';
 
-function PokedexEntries({id, name, sprite, poke, setCurrentPokemon, currentPokemon, setImgLoaded, pokemon, offset, setSearchActive, searchActive, widthOver800}) {
+function PokedexEntries({poke, setCurrentPokemon, currentPokemon, setImgLoaded, pokemon, offset, setSearchActive, searchActive, widthOver800}) {
+
+    const TYPE_COLOURS = {
+        bug: '(177,193,46,',
+        dark: '(79,58,45,',
+        dragon: '(117,94,223,',
+        electric: '(252,188,23,',
+        fairy: '(244,177,244,',
+        fighting: '(130,53,81,',
+        fire: '(231,59,12,',
+        flying: '(163,179,247,',
+        ghost: '(96,96,178,',
+        grass: '(116,194,54,',
+        ground: '(211,179,87,',
+        ice: '(163,231,253,',
+        normal: '(200,196,188,',
+        poison: '(147,69,148,',
+        psychic: '(237,72,130,',
+        rock: '(185,161,86,',
+        steel: '(181,181,195,',
+        water: '(50,149,246,',
+    }
 
     const pokeNames = pokemon.map( poke =>{
         return poke.species.name;
@@ -53,14 +74,26 @@ function PokedexEntries({id, name, sprite, poke, setCurrentPokemon, currentPokem
     }
 
     return (
-        <li className={currentPokemon.name===poke.name?'pokedex-entry selected':'pokedex-entry'} onClick={getPokemon}>
+        <li 
+            className={currentPokemon.name===poke.species.name?'pokedex-entry selected':'pokedex-entry'} 
+            onClick={getPokemon}
+            style={{background: `linear-gradient(45deg, rgba${TYPE_COLOURS[poke.types[0].type.name]}0.2) 100%, white)`}}
+        >
             <div>
-                <h2>#{id.toString().padStart(3,0)} {name}</h2> 
+                <h2>#{poke.id.toString().padStart(3,0)} {poke.species.name}</h2> 
             </div>
-            <img src={sprite} alt={name}/>
+            <img src={poke.sprites.front_default} alt={poke.species.name}/>
         </li>
     );
 }
 
 export default PokedexEntries; 
+
+// style={{background: 
+//     poke.types[1] === undefined
+//     ?`linear-gradient(45deg, rgba${TYPE_COLOURS[poke.types[0].type.name]}0.2) 100%, white)`
+//     :`linear-gradient(45deg, rgba${TYPE_COLOURS[poke.types[0].type.name]}0.2) 50%, rgba${TYPE_COLOURS[poke.types[1].type.name]}0.2) 50%)`
+// }}
+
+
 

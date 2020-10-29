@@ -52,7 +52,7 @@ function PokedexEntry({currentPokemon, imgLoaded, setImgLoaded}) {
                         <div className='pokeball-wrapper'>
                             <div className='pokeball'></div>
                         </div>
-                    )}
+                    )} 
                     <img 
                         style={imgLoaded ? {} : { display: 'none' }}
                         src={currentPokemon.imgURL} 

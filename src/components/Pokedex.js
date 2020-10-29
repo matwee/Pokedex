@@ -169,9 +169,6 @@ function Pokedex({region, entriesLoaded, setEntriesLoaded}) {
                                         {matches.map( poke=>
                                             <PokedexEntries 
                                                 key={poke.id}
-                                                id={poke.id}
-                                                name={poke.species.name}
-                                                sprite={poke.sprites.front_default}
                                                 poke={poke}
                                                 setCurrentPokemon={setCurrentPokemon}
                                                 currentPokemon={currentPokemon}
@@ -189,9 +186,6 @@ function Pokedex({region, entriesLoaded, setEntriesLoaded}) {
                                         {pokemon.map( poke=>
                                             <PokedexEntries 
                                                 key={poke.id}
-                                                id={poke.id}
-                                                name={poke.species.name}
-                                                sprite={poke.sprites.front_default}
                                                 poke={poke}
                                                 setCurrentPokemon={setCurrentPokemon}
                                                 currentPokemon={currentPokemon}

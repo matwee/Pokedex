@@ -10,7 +10,7 @@ function App() {
 
   const [entriesLoaded, setEntriesLoaded] = useState(true);
   const [region, setRegion] = useState({
-    region:'',
+    region:'React',
     offset:'',
     limit:''
   });
